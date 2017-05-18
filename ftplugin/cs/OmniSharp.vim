@@ -29,7 +29,12 @@ setlocal omnifunc=OmniSharp#Complete
 call OmniSharp#AppendCtrlPExtensions()
 
 if get(g:, 'Omnisharp_start_server', 0) == 1
-  call OmniSharp#StartServerIfNotRunning()
+  if !exists('g:OmniSharp_server_started')
+    call OmniSharp#StartServerIfNotRunning()
+    let g:OmniSharp_server_started = 1
+    let ans = confirm("Wait until 'OmniSharp' says \n'Solution has finished loading' in Command Prompt")
+    let is_running = OmniSharp#ServerIsRunning()
+  endif
 endif
 
 " Commands
